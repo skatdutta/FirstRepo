@@ -1,0 +1,46 @@
+Need to assign all traffic.
+
+sudo yum-config-manager --enable "Red Hat Enterprise Linux Server 7 Extra(RPMs)"
+
+sudo yum install docker -y
+
+sudo systemctl start docker
+
+download and install openshift 3.9
+-----------------------------------
+
+sudo yum install wget -y
+
+wget https://github.com/openshift/origin/releases/download/v3.9.0/openshift-origin-client-tools-v3.9.0-191fece-linux-64bit.tar.gz
+
+tar -xvf openshift-origin-client-tools-v3.9.0-191fece-linux-64bit.tar.gz
+
+sudo vi /etc/sysconfig/docker
+
+#add selinux --insecure-registry 172.30.0.0/16
+
+sudo systemctl restart docker
+
+
+Test Unsecure Openshift Installation
+-------------------------------------
+cd openshift-origin-client-tools-v3.9.0-191fece-linux-64bit
+
+sudo ./oc cluster up --routing-suffix=3.85.188.65.xip.io --public-hostname=ec2-3-85-188-65.compute-1.amazonaws.com
+
+https://ec2-34-228-15-26.compute-1.amazonaws.com:8443
+
+
+
+Need to select all 
+
+
+Stop Openshift
+--------------
+sudo ./oc cluster down
+
+#Finally stop EC2 instance
+
+
+
+

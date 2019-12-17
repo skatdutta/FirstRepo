@@ -1,0 +1,72 @@
+//Links:
+https://dwmkerr.com/get-up-and-running-with-openshift-on-aws/
+https://github.com/rhitwik/terraform-aws-openshift
+https://github.com/dwmkerr/terraform-aws-openshift#makefile-commands
+https://tech.smartling.com/getting-started-with-terraform-and-aws-ec2-first-steps-workshop-1-e38607f0fd4c
+
+
+1. sudo yum update -y all
+2. sudo yum install -y zip unzip git wget  
+(if these are not installed)
+3. wget https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip
+4. unzip terraform_0.11.10_linux_amd64.zip
+5. sudo mv terraform /usr/local/bin/
+Confirm terraform binary is accessible: terraform --version (v0.11.10 installed!)
+
+
+//An AWS account, configured with the cli locally 
+6. curl -O https://bootstrap.pypa.io/get-pip.py
+7.  python get-pip.py --user 
+# pip 18.1 from /home/ec2-user/.local/lib/python2.7/site-packages/pip (python 2.7) installed !
+7. pip install awscli --upgrade --user  
+# aws-cli/1.16.72 Python/2.7.5 Linux/3.10.0-957.el7.x86_64 botocore/1.12.62 installed !
+
+
+//Create the infrastructure first:
+
+# Make sure ssh agent is on, you'll need it later.
+8. eval `ssh-agent -s`
+
+# Create the infrastructure. You will be asked for a region to deploy in, use us-east-1 or your preferred region. 
+# You can configure the nuances of how the cluster is created in the main.tf file. 
+
+9. git clone https://github.com/rhitwik/terraform-aws-openshift
+10. cd terraform-aws-openshift/
+
+#setting up ssh keygen for private and public key
+11. cd ~/.ssh/
+12. ssh-keygen -t rsa -f ~/.ssh/id_rsa 
+# make sure id_rsa having group and owner as ec2-user
+
+
+#Need to configure AWS cli
+13. aws configure
+
+===============
+#Prompt - Region to deploy the cluster into-  
+
+Access key ID:
+AKIAJLRFMBK2P6SN2PQA
+
+Secret access key:
+jall896HzXBfwDNUxCBzf5UBlBepDL/7bPVMknuE
+
+$ Enter a value: us-east-1
+================
+
+
+#Need to set up the cluster
+
+14. make infrastructure
+
+# Once done need to ssh bashtion.
+
+15. make ssh-bastion
+
+16. make openshift
+
+
+17. ssh-add ~/.ssh/id_rsa
+18. chmod 600 id_rsa.pub id_rsa
+19.loadkeys -C /dev/console cz
+
